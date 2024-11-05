@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         elevation: 3, // Para Android
         
+        
     },
     reservaText: {
         fontSize: 16,

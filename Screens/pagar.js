@@ -5,7 +5,6 @@ import {
   Image,
   Text,
   TextInput,
-  Button,
   StyleSheet,
   Alert,
   ActivityIndicator,
@@ -13,6 +12,7 @@ import {
   Platform,
   ScrollView,
   Animated,
+  TouchableOpacity,
 } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { database } from "../src/config/fb";
@@ -119,11 +119,11 @@ function Pago() {
       <Text style={styles.heading}>Realizar Pago</Text>
       <Text style={styles.label}>Tarjeta crédito o débito:</Text>
       <View style={styles.cardImagesContainer}>
-        <Image source={require('../imagen/logo-header.png')} style={styles.cardImage} />
-        <Image source={require('../imagen/logo-header.png')} style={styles.cardImage} />
-        <Image source={require('../imagen/logo-header.png')} style={styles.cardImage} />
-        <Image source={require('../imagen/logo-header.png')} style={styles.cardImage} />
-        <Image source={require('../imagen/logo-header.png')} style={styles.cardImage} />
+        <Image source={require('../imagen/mastercard.jpg')} style={styles.cardImage} />
+        <Image source={require('../imagen/naranjaX-.jpg')} style={styles.cardImage} />
+        <Image source={require('../imagen/Tarjeta-Cab.jpg')} style={styles.cardImage} />
+        <Image source={require('../imagen/visa_logo_.jpg')} style={styles.cardImage} />
+        <Image source={require('../imagen/Credimas-Logo-Vector.svg-.png')} style={styles.cardImage} />
       </View>
       <TextInput
         style={styles.input}
@@ -186,7 +186,9 @@ function Pago() {
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
-        <Button title="Finalizar Pago" onPress={handleConfirm} />
+        <TouchableOpacity style={styles.boton} onPress={handleConfirm} >
+          <Text style={styles.texboton}> Finalizar Pago</Text>
+        </TouchableOpacity>
       )}
       </ScrollView>
    </KeyboardAvoidingView>
@@ -227,7 +229,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   cardImage: {
-    width: 65,
+    width: 60,
     height: 20,
   },
   checkboxContainer: {
@@ -238,12 +240,27 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 15,
+    marginBottom: 1,
   },
   column: {
     flex: 1,
     marginRight:5
   },
+  boton:{
+      backgroundColor:'#737BFD',
+      borderRadius: 10, // Bordes redondeados
+      paddingVertical: 12, // Espacio vertical interno
+      paddingHorizontal: 20, // Espacio horizontal interno
+      alignItems: 'center', // Centra el texto horizontalmente
+      justifyContent: 'center', // Centra el texto verticalmente
+      marginTop: 20, // Espacio superior
+    },
+    texboton: {
+      color: '#fff', // Color del texto
+      fontSize: 16, // Tamaño del texto
+      fontWeight: 'bold', // Negrita
+    },
+  
 });
 
 export default Pago;

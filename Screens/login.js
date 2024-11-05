@@ -10,7 +10,7 @@ const EmpleadoEmails = [
   "lautaroezequiel@gmail.com"
 ];
 
-export default function Login({ setIsLoggedIn,setUserRole }) {
+export default function Login({ isLoggedIn,setUserRole }) {
   const navigation= useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,8 +30,13 @@ export default function Login({ setIsLoggedIn,setUserRole }) {
     
 
 
-    setErrorMessage("");
-    setIsLoggedIn(true)
+    console.log("isLoggedIn:", isLoggedIn); // Debe ser una función
+    if (typeof isLoggedIn === "function") {
+      isLoggedIn(true);
+    } else {
+        console.warn("isLoggedIn no está definido");
+    }
+
     if (EmpleadoEmails.includes(email)){
       setUserRole("Empleado");
       navigation.navigate("MainEmpl");

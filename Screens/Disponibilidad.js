@@ -100,6 +100,7 @@ export default function Disponibilidad() {
           username: userData.username,
           phone: userData.phone,
           dni: userData.dni,
+          estadoPago: 'Pendiente de pago',
         });
   
         console.log('Documento escrito con ID: ', reservaRef.id);

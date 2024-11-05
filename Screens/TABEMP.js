@@ -21,15 +21,7 @@ export default function MyTabsEmpl() {
             <Tab.Screen name="Inicio" component={Inicioempl}
                 options={{
                     tabBarLabel: () => null,
-                    headerTitle: () => (
-                        <View style={{ flex: 1, alignItems: 'center', marginLeft: '42%', marginTop: '4%' }}>
-                            <Image
-                                source={require('../imagen/logo-header.png')}
-                                style={{ width: 100, height: 40 }}
-                                resizeMode="contain"
-                            />
-                        </View>
-                    ),
+                    headerTitle: () => null,
                     headerStyle: { backgroundColor: '#1A224C' },
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="home" size={size} color={color} />

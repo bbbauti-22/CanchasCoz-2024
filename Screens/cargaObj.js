@@ -202,6 +202,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#404aa3',
         width: '100%',
         justifyContent: 'flex-start',
+        marginTop: 20, // Aumentar el margen superior
       },
     title: {
       fontSize: 27,

@@ -6,7 +6,7 @@ import { doc, setDoc } from "firebase/firestore";
 import Notificacion from "./notificacion";
 import { useNavigation } from '@react-navigation/native';
 
-export default function Register() {
+export default function Register({isRegistering}) {
   const navigation= useNavigation();
   const [username, setUsername] = useState("");
   const [dni, setDni] = useState("");
@@ -49,6 +49,7 @@ export default function Register() {
         role,
       });
       setErrorMessage("");
+    
       navigation.navigate("Login");
     } catch (error) {
       console.error("Error en el registro:", error);

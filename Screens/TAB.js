@@ -20,7 +20,7 @@ export default function MyTabs() {
             <Tab.Screen name="Ini" component={Inicio}
                 options={{
                     tabBarLabel: () => null,
-                    headerTitle: () => (
+                    headerTitle: () => ( 
                         <View style={{  alignItems: 'center', marginLeft: '42%', marginTop: '4%' }}>
                             <Image
                                 source={require('../imagen/logo-header.png')}
@@ -29,7 +29,8 @@ export default function MyTabs() {
                             />
                         </View>
                     ),
-                    headerStyle: { backgroundColor: '#1A224C' },
+                    headerStyle: { backgroundColor: '#1A224C'},
+                    
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="home" size={size} color={color} />
                     ),
