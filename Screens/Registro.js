@@ -1,12 +1,11 @@
-  import React, { useState } from "react";
+import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { auth, database } from "../src/config/fb";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import Notificacion from "./notificacion";
 import { useNavigation } from '@react-navigation/native';
 
-export default function Register({isRegistering}) {
+export default function Register({isRegisterIn,UserRole}) {
   const navigation= useNavigation();
   const [username, setUsername] = useState("");
   const [dni, setDni] = useState("");
@@ -17,11 +16,15 @@ export default function Register({isRegistering}) {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const EmpleadoEmails = [
-    "bauti22puentes@gmail.com",
-    "lautaroezequiel@gmail.com"
-  ];
+  const EmpleadoEmails = [ "bautipuentes@gmail.com",
+   "gonza1234@gmail.com",
+   "thiago@gmail.com",
+   "agustin@gmail.com"
+
+  ]; 
+   
   
+ 
   const handleRegister = async () => {
     if (!username || !dni || !email || !phone || !password || !confirmPassword) {
       setErrorMessage("Todos los campos deben ser completados.");
@@ -36,11 +39,16 @@ export default function Register({isRegistering}) {
       return;
     }
     try {
+
+      
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
+      
+      
       const role = EmpleadoEmails.includes(email) ? 'empleado' : 'user';  
 
+      
       await setDoc(doc(database, "users", user.uid), {
         username,
         dni,
@@ -48,9 +56,16 @@ export default function Register({isRegistering}) {
         phone,
         role,
       });
+
+      if (UserRole && typeof UserRole === 'function') {
+        UserRole(role);
+      }
+      console.log("Usuario autenticado")
+      if (typeof isLoggedIn === "function") {
+        isRegisterIn(true);
+      } 
       setErrorMessage("");
-    
-      navigation.navigate("Login");
+      navigation.navigate("login");
     } catch (error) {
       console.error("Error en el registro:", error);
       if (error.code === 'auth/email-already-in-use') {
@@ -65,16 +80,18 @@ export default function Register({isRegistering}) {
     }
   };
 
-  return (
+  return  (
     <View style={styles.container}>
-      {errorMessage ? <Notificacion mensaje={errorMessage} /> : null}
       <Text style={styles.title}>Registro</Text>
+      
       <TextInput
         style={styles.input}
         placeholder="Nombre de usuario"
         value={username}
         onChangeText={setUsername}
       />
+      {!username && errorMessage && <Text style={styles.errorText}>Nombre de usuario requerido.</Text>}
+      
       <TextInput
         style={styles.input}
         placeholder="DNI"
@@ -82,6 +99,8 @@ export default function Register({isRegistering}) {
         onChangeText={setDni}
         keyboardType="numeric"
       />
+      {!dni && errorMessage && <Text style={styles.errorText}>DNI requerido.</Text>}
+      
       <TextInput
         style={styles.input}
         placeholder="Correo electrónico"
@@ -89,6 +108,8 @@ export default function Register({isRegistering}) {
         onChangeText={setEmail}
         keyboardType="email-address"
       />
+      {!email && errorMessage && <Text style={styles.errorText}>Correo electrónico requerido.</Text>}
+
       <TextInput
         style={styles.input}
         placeholder="Número telefónico"
@@ -96,6 +117,8 @@ export default function Register({isRegistering}) {
         onChangeText={setPhone}
         keyboardType="phone-pad"
       />
+      {!phone && errorMessage && <Text style={styles.errorText}>Número telefónico requerido.</Text>}
+
       <TextInput
         style={styles.input}
         placeholder="Contraseña"
@@ -103,6 +126,8 @@ export default function Register({isRegistering}) {
         onChangeText={setPassword}
         secureTextEntry
       />
+      {!password && errorMessage && <Text style={styles.errorText}>Contraseña requerida.</Text>}
+
       <TextInput
         style={styles.input}
         placeholder="Repetir contraseña"
@@ -110,6 +135,8 @@ export default function Register({isRegistering}) {
         onChangeText={setConfirmPassword}
         secureTextEntry
       />
+      {password && confirmPassword && password !== confirmPassword && <Text style={styles.errorText}>Las contraseñas no coinciden.</Text>}
+
       <View style={styles.checkboxContainer}>
         <TouchableOpacity
           onPress={() => setAcceptedTerms(!acceptedTerms)}
@@ -117,13 +144,18 @@ export default function Register({isRegistering}) {
         >
           {acceptedTerms && <Text style={styles.checkboxText}>✅</Text>}
         </TouchableOpacity>
-        <Text style={styles.checkboxLabel}>
+        <Text style={styles.checkboxLabel} onPress={() => navigation.navigate('TerminosandCond')}>
           Acepto{" "}
         </Text>
       </View>
-      <TouchableOpacity  onPress={()=> navigation.navigate('Login')}>
+      {!acceptedTerms && errorMessage && <Text style={styles.errorText}>Debes aceptar los términos y condiciones.</Text>}
+
+      {errorMessage && email && phone && password && confirmPassword && acceptedTerms && <Text style={styles.errorText}>{errorMessage}</Text>}
+
+      <TouchableOpacity onPress={() => navigation.navigate('login')}>
         <Text style={styles.link}>¿Ya tienes una cuenta? Inicia sesión aquí</Text>
       </TouchableOpacity>
+
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>Registrarse</Text>
       </TouchableOpacity>
@@ -197,5 +229,13 @@ const styles = StyleSheet.create({
   checkboxLabel: {
     color: "#fff",
     fontSize: 16,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 14,
+    marginBottom: 10,
+    textAlign: "left",
+    width: "100%",
+    paddingHorizontal: 10,
   },
 });

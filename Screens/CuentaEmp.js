@@ -4,12 +4,13 @@ import * as ImagePicker from 'expo-image-picker';
 import { getFirestore, doc, getDoc ,setDoc} from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Linking } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import {auth} from '../src/config/fb';
+import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome'; // Importamos el ícono
 
 
-const CuentaEmpl = () => {
+const CuentaEmpl = ({isLogedIn}) => {
+    const navigation = useNavigation();
     const [image, setImage] = useState(null);
     const [userData, setUserData] = useState({
         username: "",
@@ -19,7 +20,6 @@ const CuentaEmpl = () => {
         profileImageUrl: "",
     });
     const [editing, setEditing] = useState(false);
-
     const userId= auth.currentUser.uid //obtener el ID del usuario autenticado
 
 
@@ -114,16 +114,24 @@ const CuentaEmpl = () => {
             Alert.alert("Error al actualizar la información", error.message);
         }
     };
-
+    const handleLogout = () => {
+        console.log("Cierre de sesión")
+        if (typeof isLogedIn === "function") {
+          isLogedIn(false);
+        } 
+        navigation.navigate("login"); // Navega a Login
+      };
 
     return (
         <View style={styles.container}>
+            
             <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={pickImage}>
-                    <MaterialIcons name="edit" size={24} color="white" />
-                </TouchableOpacity>
+                
                 <TouchableOpacity onPress={deleteImage}>
                     <MaterialIcons name="delete" size={24} color="white" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.cerrarsesion} onPress={handleLogout}>
+                <Icon name="sign-out" size={15} color="white" style={styles.icon} />
                 </TouchableOpacity>
             </View>
             <TouchableOpacity onPress={pickImage}>
@@ -289,6 +297,26 @@ const styles = StyleSheet.create({
     contenedorAyuda: {
         marginVertical: 10, // Agrega espacio vertical entre el texto y el botón
     },
+    botoncierre: {
+        position: 'absolute', // Posiciona el botón en un lugar específico
+        top:15, // Ajusta la distancia desde la parte superior
+        left: 280, // Ajusta la distancia desde el borde izquierdo
+        zIndex: 1 // Asegura que esté por encima de otros elementos si es necesario
+      },
+      cerrarsesion: {
+        backgroundColor: '#737BDF', // Color de fondo del botón
+        paddingVertical: 5, // Espaciado vertical del botón
+        paddingHorizontal: 5, // Espaciado horizontal
+        borderRadius: 5, // Bordes redondeados
+        justifyContent: 'center', // Centrado vertical del texto
+        alignItems: 'center', // Centrado horizontal del texto
+      },
+      cerrarsesionText: {
+        color: 'white', // Color del texto
+        fontWeight: 'bold', // Estilo de fuente
+        fontSize: 16, // Tamaño de la fuente
+      },
+    
 });
 
 export default CuentaEmpl;

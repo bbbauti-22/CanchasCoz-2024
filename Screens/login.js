@@ -2,15 +2,17 @@ import React,{useState} from "react";
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { auth } from "../src/config/fb";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import Notificacion from "./notificacion";
 import { useNavigation } from '@react-navigation/native';
 
 const EmpleadoEmails = [
-  "bauti22puentes@gmail.com",
-  "lautaroezequiel@gmail.com"
+  "bautipuentes@gmail.com",
+  "gonza1234@gmail.com",
+  "thiago@gmail.com",
+  "agustin@gmail.com"
+
 ];
 
-export default function Login({ isLoggedIn,setUserRole }) {
+export default function Login({ isLoggedIn,UserRole }) {
   const navigation= useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,27 +26,20 @@ export default function Login({ isLoggedIn,setUserRole }) {
     
     try {
     const userCredential =  await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-
-    
-    
-
-
-    console.log("isLoggedIn:", isLoggedIn); // Debe ser una función
-    if (typeof isLoggedIn === "function") {
-      isLoggedIn(true);
-    } else {
-        console.warn("isLoggedIn no está definido");
-    }
+    const user = userCredential.user; 
 
     if (EmpleadoEmails.includes(email)){
-      setUserRole("Empleado");
+      UserRole("Empleado");
       navigation.navigate("MainEmpl");
     }else{
-      setUserRole("Usuario");
+      UserRole("Usuario");
       navigation.navigate("Main");
     }
-    
+    console.log("usuario logeado")
+    if (typeof isLoggedIn === "function") {
+      isLoggedIn(true);
+    } 
+
     } catch (error) {
       console.error("Error en el inicio de sesión:", error);
       if (error.code === 'auth/user-not-found') {
@@ -60,16 +55,17 @@ export default function Login({ isLoggedIn,setUserRole }) {
         setErrorMessage("Error en el inicio de sesión. Intenta de nuevo.");
       }
     }
+    
   };
+  
 
   return (
     <View style={styles.container}>
-      {errorMessage ? <Notificacion mensaje={errorMessage} /> : null}
-    
       <Image
         source={require("../imagen/logo-Login.png")}
         style={styles.logo}
       />
+      
       <TextInput
         style={styles.input}
         placeholder="Correo electrónico"
@@ -77,6 +73,8 @@ export default function Login({ isLoggedIn,setUserRole }) {
         onChangeText={setEmail}
         keyboardType="email-address"
       />
+      {errorMessage && !email && <Text style={styles.errorText}>El campo de correo electrónico es obligatorio.</Text>}
+      
       <TextInput
         style={styles.input}
         placeholder="Contraseña"
@@ -84,6 +82,10 @@ export default function Login({ isLoggedIn,setUserRole }) {
         onChangeText={setPassword}
         secureTextEntry
       />
+      {errorMessage && !password && <Text style={styles.errorText}>El campo de contraseña es obligatorio.</Text>}
+      
+      {errorMessage && email && password && <Text style={styles.errorText}>{errorMessage}</Text>}
+
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Iniciar sesión</Text>
       </TouchableOpacity>
@@ -100,7 +102,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#404aa3",
     padding: 20,
-    marginTop: 20, // Mantener margen superior
   },
   title: {
     fontSize: 24,
@@ -164,5 +165,13 @@ const styles = StyleSheet.create({
   checkboxLabel: {
     color: "#fff",
     fontSize: 16,
+  },
+  errorText: {
+    color: "gray",
+    fontSize: 14,
+    marginBottom: 10,
+    textAlign: "left",
+    width: "100%",
+    paddingHorizontal: 10,
   },
 });

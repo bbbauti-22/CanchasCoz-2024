@@ -13,7 +13,7 @@ const PagoFinal = () => {
         const snapshot = await getDocs(collection(database, 'Reservas'));
         const reservasData = snapshot.docs.map(doc => ({
           ...doc.data(),
-          id: doc.id, // Añadir el ID de la reserva para referencia
+          id: doc.id, 
         }));
         setReservas(reservasData);
       } catch (error) {
@@ -23,7 +23,7 @@ const PagoFinal = () => {
     fetchReservas();
   }, []);
 
-  // Simulación de finalización de pago
+
   const handleFinalizarPago = async (reserva) => {
     Alert.alert(
       'Pago Finalizado',

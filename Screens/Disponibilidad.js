@@ -4,7 +4,7 @@ import React, { useState ,useEffect} from 'react';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { format } from 'date-fns';
-import { useNavigation,useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 //base de datos
 import { collection, addDoc,getDoc,getDocs,doc} from 'firebase/firestore';
@@ -13,12 +13,11 @@ import { auth } from '../src/config/fb';
 
 export default function Disponibilidad() {
   const navigation= useNavigation();
-  const route= useRoute();
-   const [modalVisible, setModalVisible] = useState(false);//modal de confirmacion.
+  const [modalVisible, setModalVisible] = useState(false);//modal de confirmacion.
   const [canchaUno, setCanchaUno] = useState('no-asignado');
   const [canchaDos, setCanchaDos] = useState('no-asignado');
   const [canchaTres, setCanchaTres] = useState('no-asignado');
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);// picker de para calendario
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);// picker para calendario
   const [fecha, setFecha] = useState('');
   const [horariosOcupados, setHorariosOcupados] = useState([0, 0, 0]);
   const [userData, setUserData] = useState({ username: '', phone: '', dni: '' });
@@ -72,7 +71,7 @@ export default function Disponibilidad() {
     if (ocupados >= 0 && ocupados <= 4) return 'green';
     if (ocupados >= 5 && ocupados <= 7) return 'yellow';
     if (ocupados >= 8) return 'red';
-    return 'blue'; // Por defecto
+    return 'gray'; // Por defecto
   };
 
 
@@ -84,7 +83,7 @@ export default function Disponibilidad() {
   // Manejar la confirmación de la fecha seleccionada
   const handleConfirm = (date) => {
     setFecha(format(date, 'yyyy-MM-dd'));
-    hideDatePicker(); // Ocultar el selector después de seleccionar la fecha
+    hideDatePicker(); 
   };
 
     // Función para enviar datos a la base de datos
@@ -100,7 +99,6 @@ export default function Disponibilidad() {
           username: userData.username,
           phone: userData.phone,
           dni: userData.dni,
-          estadoPago: 'Pendiente de pago',
         });
   
         console.log('Documento escrito con ID: ', reservaRef.id);
@@ -231,7 +229,6 @@ export default function Disponibilidad() {
       <Modal
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>

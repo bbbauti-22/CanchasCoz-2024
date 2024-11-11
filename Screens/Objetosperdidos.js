@@ -202,12 +202,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     marginTop:20
   },
-  backButton: {
-    position: 'absolute',
-    top: 20,
-    left: 20,
-    zIndex: 1,
-  },
   title: {
     fontSize: 27,
     textAlign: 'center',

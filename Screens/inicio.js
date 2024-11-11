@@ -3,15 +3,19 @@ import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { database } from '../src/config/fb';
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where,getDoc,doc } from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export default function Inicio({ onLoginStatusChange }) {
+export default function Inicio({isLogedIn}) {
   const navigation = useNavigation();
   const [menuVisible, setMenuVisible] = useState(false); // Menú lateral
   const [reservas, setReservas] = useState([]);
   const [objetosPerdidos, setObjetosPerdidos] = useState([]);
-  
+  const [userData, setUserData] = useState({
+    username: "",})
+
   const auth = getAuth();
   const user = auth.currentUser;
 
@@ -24,9 +28,10 @@ export default function Inicio({ onLoginStatusChange }) {
         const q = query(reservasCollection, where("userId", "==", user.uid));
         const reservasSnapshot = await getDocs(q);
         const reservasList = reservasSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        console.log("Reservas:", reservasList); 
         setReservas(reservasList);
       } catch (error) {
-        console.error("Error fetching reservas:", error);
+        console.error("Error al obtener reservas:", error);
       }
     };
 
@@ -56,23 +61,43 @@ export default function Inicio({ onLoginStatusChange }) {
 
   const handleSelectMenuOption = (screen) => {
     console.log(`Navigating to: ${screen}`);
-    setMenuVisible(false);
     navigation.navigate(screen);
   };
   const handleLogout = () => {
-    console.log("onLoginStatusChange:", onLoginStatusChange); // Debe ser una función
-    if (typeof onLoginStatusChange === "function") {
-      isLoggedIn(false);
-    } else {
-      console.warn("onLoginStatusChange no está definido");
-    }
+    console.log("Cierre de sesión")
+    if (typeof isLogedIn === "function") {
+      isLogedIn(false);
+    } 
     navigation.navigate("login"); // Navega a Login
   };
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+        const database = getFirestore();
+        const userDoc = doc(database, 'users', user.uid); 
+        const userSnapshot = await getDoc(userDoc);
+        if (userSnapshot.exists()) {
+            const data = userSnapshot.data();
+            console.log(data);
+            setUserData(data); 
+        } else {
+            Alert.alert("No se encontró el usuario");
+        }
+    };
+
+    fetchUserData();
+}, [user.uid]);
+
+  
   return (
     <View style={styles.container}>
+
+        <View style={styles.title}>
+           <Text style={ styles.Text}>Bienvenido  {userData.username}</Text> 
+        </View>
+        
       <TouchableOpacity onPress={() => setMenuVisible(true)} style={styles.menuButton}>
-        <Text style={styles.menuButtonText}>Menu</Text>
+      <Ionicons name="menu" size={24} color="white" />
       </TouchableOpacity>
 
       {menuVisible && (
@@ -117,7 +142,7 @@ export default function Inicio({ onLoginStatusChange }) {
               )}
             </View>
           )}
-          showsVerticalScrollIndicator={false}
+          
         />
       </View>
 
@@ -159,8 +184,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     margin: 20,
-    marginTop: '10%',
-    marginLeft: '-75%',
+    marginTop: '-20%',
+    marginLeft: '-85%',
     justifyContent: 'center', // Cambiar a 'center' para centrar el texto
   },
   menuButtonText: {
@@ -244,4 +269,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 2,
   },
+  title:{
+    marginTop:'10%',
+    position:'fixed'
+   },
+   Text:{
+    color:'white',
+    fontSize:22
+   }
+
 });

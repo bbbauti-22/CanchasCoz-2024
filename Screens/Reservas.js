@@ -12,7 +12,7 @@ export default function Reservass() {
     useEffect(() => {
         const fetchReservas = async () => {
             const reservasCollection = collection(database, "Reservas");
-            const q = query(reservasCollection, where("userId", "==", userId)); // Filtrar por userId
+            const q = query(reservasCollection, where("userId", "==", userId)); 
             const reservasSnapshot = await getDocs(q);
             const reservasList = reservasSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setReservas(reservasList);
@@ -46,6 +46,7 @@ export default function Reservass() {
                     style={styles.deleteButton}
                     onPress={() => {
                         Alert.alert(
+                            
                             "Eliminar Reserva",
                             "¿Estás seguro de que deseas eliminar esta reserva?",
                             [

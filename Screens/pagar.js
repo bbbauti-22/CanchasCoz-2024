@@ -14,13 +14,16 @@ import {
   Animated,
   TouchableOpacity,
 } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation,useRoute } from '@react-navigation/native';
+
 import { database } from "../src/config/fb";
 import { collection, addDoc } from "firebase/firestore";
 
 import CheckBox from 'expo-checkbox';
 
 function Pago() {
+  const route = useRoute();
+  const { canchaUno, canchaDos, canchaTres, fecha } = route.params;
   const navigation = useNavigation();
   const [cardType, setCardType] = useState("");
   const [cardNumber, setCardNumber] = useState("");
@@ -79,6 +82,10 @@ function Pago() {
       expiryDate,
       cvv,
       documentNumber,
+      canchaUno, // Agregar cancha 1
+      canchaDos, // Agregar cancha 2
+      canchaTres, // Agregar cancha 3
+      fecha, // Agregar fecha
     };
 
     try {
@@ -91,6 +98,10 @@ function Pago() {
           expiryDate,
           cvv,
           documentNumber,
+          canchaUno, // Agregar cancha 1
+          canchaDos, // Agregar cancha 2
+          canchaTres, // Agregar cancha 3
+          fecha, // Agregar fecha
         };
         await addDoc(collection(database, "savedCards"), savedCardData);
         Alert.alert("Pago realizado y tarjeta guardada para futuras compras.");

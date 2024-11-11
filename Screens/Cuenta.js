@@ -11,7 +11,7 @@ import {auth} from '../src/config/fb';
 
 const Cuentacliente = () => {
 
-    const phoneNumber = '542995759025'; // Asegúrate de que el número esté en el formato internacional
+    const phoneNumber = '542995759025'; 
     const url = `whatsapp://send?phone=${phoneNumber}`;
     const navigation = useNavigation();
     const [image, setImage] = useState(null);
@@ -36,7 +36,7 @@ const Cuentacliente = () => {
               const data = userSnapshot.data();
               console.log(data);
               setUserData(data);
-              setImage(data.profileImageUrl); // Asigna la URL de la imagen
+              setImage(data.profileImageUrl); 
           } else {
               Alert.alert("No se encontró el usuario");
           }
@@ -70,7 +70,7 @@ const Cuentacliente = () => {
     const uploadImage = async (uri) => {
         try {
             const storage = getStorage();
-            const storageRef = ref(storage, `profilePictures/${userId}.jpg`); // Asegúrate de reemplazar 'userId' por el ID real del usuario
+            const storageRef = ref(storage, `profilePictures/${userId}.jpg`); 
             const response = await fetch(uri);
             const blob = await response.blob();
             await uploadBytes(storageRef, blob);
@@ -91,7 +91,7 @@ const Cuentacliente = () => {
     const deleteImage = async () => {
         try {
             const storage = getStorage();
-            const storageRef = ref(storage, `profilePictures/${userId}.jpg`); // Asegúrate de reemplazar 'userId' por el ID real del usuario
+            const storageRef = ref(storage, `profilePictures/${userId}.jpg`); 
             await deleteObject(storageRef);
             setUserData({ ...userData, profileImageUrl: "" });
             setImage(null);

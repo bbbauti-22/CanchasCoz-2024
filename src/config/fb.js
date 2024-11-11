@@ -19,7 +19,7 @@ const app = initializeApp(firebaseConfig);
 
 // Inicializa Auth con AsyncStorage
 const auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(AsyncStorage)  // Utiliza la persistencia local
+  persistence: getReactNativePersistence(AsyncStorage)  
 });
 
 // Inicializa Firestore
