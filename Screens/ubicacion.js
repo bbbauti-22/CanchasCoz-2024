@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Linking, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Linking, Dimensions } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Ubicaciones = () => {
-  // Array de ubicaciones de los gimnasios
+  
   const Canchas = [
     { name: 'Canchas COZ ', latitude: -38.979466, longitude: -68.075714 },
    

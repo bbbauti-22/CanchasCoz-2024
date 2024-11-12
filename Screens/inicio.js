@@ -20,7 +20,7 @@ export default function Inicio({isLogedIn}) {
   const user = auth.currentUser;
 
   useEffect(() => {
-    if (!user) return; // Verificar que el usuario está autenticado
+    if (!user) return; 
     
     const fetchReservas = async () => {
       try {
@@ -57,12 +57,13 @@ export default function Inicio({isLogedIn}) {
     .slice(-3)
     .reverse();
     
-  const lastThreeObjetosPerdidos = objetosPerdidos.slice(-3).reverse(); // Obtener las últimas 3 solicitudes
+  const lastThreeObjetosPerdidos = objetosPerdidos.slice(-3).reverse(); 
 
   const handleSelectMenuOption = (screen) => {
     console.log(`Navigating to: ${screen}`);
     navigation.navigate(screen);
   };
+  
   const handleLogout = () => {
     console.log("Cierre de sesión")
     if (typeof isLogedIn === "function") {

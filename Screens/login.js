@@ -98,7 +98,7 @@ export default function Login({ isLoggedIn,UserRole }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-start", // Mantener la alineación desde la parte superior
+    justifyContent: "flex-start", 
     alignItems: "center",
     backgroundColor: "#404aa3",
     padding: 20,

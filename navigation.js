@@ -30,7 +30,9 @@ export function MyStack() {
                 component={Disponibilidad}
                 options={{ headerShown: false }} />
 
-            <HomeStackNavigator.Screen name="Pagar" component={Pago} options={{
+            <HomeStackNavigator.Screen 
+                name="Pagar" 
+                component={Pago} options={{
                 headerTintColor: 'white', headerTitle: '',
                 backgroundColor: '#1A224C',
                 headerStyle: { backgroundColor: '#1A224C' },
@@ -100,22 +102,7 @@ export default function Navigation() {
                     />
                 )}
 
-                <HomeStackNavigator.Screen
-                    name="Disponibilidad"
-                    component={Disponibilidad}
-                    options={{ headerShown: false }}
-                />
-
-                <HomeStackNavigator.Screen
-                    name="Pagar"
-                    component={Pago}
-                    options={{
-                        headerTintColor: 'white',
-                        headerTitle: '',
-                        backgroundColor: '#1A224C',
-                        headerStyle: { backgroundColor: '#1A224C' },
-                    }}
-                />
+             
 
                 <HomeStackNavigator.Screen
                     name="Ini"
